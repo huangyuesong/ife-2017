@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+ul#queue > li {
+  display: inline-block;
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  color: white;
+  background-color: red;
+  margin: 0 5px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <textarea id="data-input"></textarea>
+  <button type="button" id="render-btn">render</button>
+  <ul id="queue"></ul>
+  <input type="text" id="search-input" placeholder="search...">
+  <button type="button" id="search-btn">search</button>
+</div>
+
+<script>
+
+const dataInput = document.querySelector('#data-input');
+const searchInput = document.querySelector('#search-input');
+const ul = document.querySelector('#queue');
+
+function _render() {
+  const spliters = [',', '，', '、', ' ', ' ', '\t', '\n'];
+  const len = spliters.length;
+  for (let i = 0; i < len; ++i) {
+    const spliter = spliters[i];
+
+    if (dataInput.value.indexOf(spliter) !== -1) {
+      const data = dataInput.value.split(spliter);
+
+      data.forEach(data=> {
+	const li = document.createElement('li');
+	li.innerText = data;
+	ul.appendChild(li);
+      });
+
+      return;
+    }
+  }
+}
+document.querySelector('#render-btn').addEventListener('click', _render);
+
+function _search() {
+  const keyword = searchInput.value.trim();
+  ul.querySelectorAll('li').forEach(li=> {
+    li.removeAttribute('style');
+    (li.innerText.indexOf(keyword) !== -1) && (li.style.color = 'green');
+  });
+}
+document.querySelector('#search-btn').addEventListener('click', _search);
+
+</script>
+</body>
+</html>

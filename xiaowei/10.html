@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+[class*='item-'] {
+  width: 150px;
+  border: 1px solid #f00;
+  margin: 20px;
+}
+
+.item-1 { height: 120px; }
+.item-2 { height: 100px; }
+.item-3 { height: 40px; }
+.item-4 {
+  height: 200px;
+  border-color: #0f0;
+}
+
+@media screen and (max-width: 640px) {
+  .container {
+    flex-flow: row wrap;
+    align-items: flex-start;
+  }
+
+  .item-4 {
+    order: -1;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="item-1"></div>
+  <div class="item-2"></div>
+  <div class="item-3"></div>
+  <div class="item-4"></div>
+</div>
+
+</body>
+</html>

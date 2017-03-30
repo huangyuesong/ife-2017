@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+ul#queue {
+  display: flex;
+  align-items: flex-end;
+}
+
+ul#queue > li {
+  width: 40px;
+  background-color: red;
+  margin: 0 5px;
+  list-style-type: none;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <input type="text" id="data-input">
+  <button type="button" class="func-btn">左侧入</button>
+  <button type="button" class="func-btn">左侧出</button>
+  <button type="button" class="func-btn">右侧入</button>
+  <button type="button" class="func-btn">右侧出</button>
+
+  <ul id="queue">
+    <li style="height: 40px;"></li>
+    <li style="height: 20px;"></li>
+    <li style="height: 50px;"></li>
+    <li style="height: 30px;"></li>
+  </ul>
+
+  <button id="sort-btn">Bubble Sort</button>
+</div>
+
+<script>
+
+const dataInput = document.querySelector('#data-input');
+const ul = document.querySelector('#queue');
+
+function _unshift(data) {
+  const firstChild = ul.querySelector('li:first-child');
+  const li = document.createElement('li');
+  li.style.height = data + 'px';
+
+  if (ul.querySelectorAll('li').length >= 60) {
+    alert('Queue already full!');
+  } else {
+    if (firstChild) {
+      ul.insertBefore(li, firstChild);
+    } else {
+      ul.appendChild(li);
+    }
+  } 
+}
+
+function _shift() {
+  (ul.querySelectorAll('li').length) && (ul.removeChild(ul.querySelector('li:first-child')));
+}
+
+function _push(data) {
+  const li = document.createElement('li');
+  li.style.height = data + 'px';
+
+  if (ul.querySelectorAll('li').length >= 60) {
+    alert('Queue already full!');
+  } else {
+    ul.appendChild(li);
+  }
+}
+
+function _pop() {
+  (ul.querySelectorAll('li').length) && (ul.removeChild(ul.querySelector('li:last-child')));
+}
+
+['_unshift', '_shift', '_push', '_pop'].forEach((fn, idx)=> {
+  const funcBtn = document.querySelectorAll('.func-btn')[idx];
+
+  funcBtn.addEventListener('click', evt=> {
+    try {
+      data = Number.parseFloat(dataInput.value);
+
+      if (Number.isNaN(data)) {
+	throw new TypeError();
+      }
+
+      if (data < 10 || data > 100) {
+	throw new RangeError();
+      }
+
+      window[fn].call(null, data);
+    } catch (err) {
+      if (err instanceof TypeError) {
+	alert('TypeError');
+      } else if (err instanceof RangeError) {
+	alert('RangeError');
+      }
+    }
+  });
+});
+
+function _render(ary) {
+  ul.innerHTML = '';
+  ary.forEach(height=> {
+    let li = document.createElement('li');
+    li.style.height = height + 'px';
+    ul.appendChild(li);
+  });
+}
+
+function _sort () {
+  const ary = [];
+  ul.querySelectorAll('li').forEach(li=> ary.push(Number(li.style.height.replace('px', ''))));
+  const len = ary.length;
+
+  for (let i = 0; i < len; ++i) {
+    for (let j = 0; j < len - i - 1; ++j) {
+      if (ary[j + 1] > ary[j]) {
+	let tmp = ary[j];
+	ary[j] = ary[j + 1];
+	ary[j + 1] = tmp;
+      }
+    }
+  }
+  _render(ary);
+}
+
+document.querySelector('#sort-btn').addEventListener('click', _sort);
+
+</script>
+</body>
+</html>

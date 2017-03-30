@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+ul#queue > li {
+  display: inline-block;
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  color: white;
+  background-color: red;
+  margin: 0 5px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <input type="text" id="data-input">
+  <button type="button" class="func-btn">左侧入</button>
+  <button type="button" class="func-btn">左侧出</button>
+  <button type="button" class="func-btn">右侧入</button>
+  <button type="button" class="func-btn">右侧出</button>
+
+  <ul id="queue"></ul>
+</div>
+
+<script>
+
+const dataInput = document.querySelector('#data-input');
+const ul = document.querySelector('#queue');
+
+function _unshift(data) {
+  let firstChild = ul.querySelector('li:first-child');
+  let li = document.createElement('li');
+  li.innerText = data;
+
+  if (firstChild) {
+    ul.insertBefore(li, firstChild);
+  } else {
+    ul.appendChild(li);
+  }
+}
+
+function _shift() {
+  (ul.querySelectorAll('li').length) && (ul.removeChild(ul.querySelector('li:first-child')));
+}
+
+function _push(data) {
+  let li = document.createElement('li');
+  li.innerText = data;
+  ul.appendChild(li);
+}
+
+function _pop() {
+  (ul.querySelectorAll('li').length) && (ul.removeChild(ul.querySelector('li:last-child')));
+}
+
+['_unshift', '_shift', '_push', '_pop'].forEach((fn, idx)=> {
+  let funcBtn = document.querySelectorAll('.func-btn')[idx];
+
+  funcBtn.addEventListener('click', evt=> {
+    try {
+      data = Number.parseFloat(dataInput.value);
+
+      if (Number.isNaN(data)) {
+	throw new Error();
+      }
+
+      window[fn].call(null, data);
+    } catch (err) {
+      alert('TypeError');
+    }
+  });
+});
+
+</script>
+</body>
+</html>

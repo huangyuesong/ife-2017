@@ -1,0 +1,70 @@
+<!DOCTYPE>
+<html>
+<body>
+
+  <ul id="source">
+    <li>北京空气质量：<b>90</b></li>
+    <li>上海空气质量：<b>70</b></li>
+    <li>天津空气质量：<b>80</b></li>
+    <li>广州空气质量：<b>50</b></li>
+    <li>深圳空气质量：<b>40</b></li>
+    <li>福州空气质量：<b>32</b></li>
+    <li>成都空气质量：<b>90</b></li>
+  </ul>
+
+  <ul id="resort">
+    <!-- 
+    <li>第一名：北京空气质量：<b>90</b></li>
+    <li>第二名：北京空气质量：<b>90</b></li>
+    <li>第三名：北京空气质量：<b>90</b></li>
+     -->
+
+  </ul>
+
+  <button id="sort-btn">排序</button>
+
+<script>
+
+function getData() {
+  let data = [];
+
+  document.querySelector('#source').querySelectorAll('li').forEach(li=> {
+    data.push([li.innerText.substring(0, 2), li.querySelector('b').innerText]);
+  });
+
+  return data;
+}
+
+function sortAqiData(data) {
+  return data.sort((data1, data2)=> {
+    if (data1[1] > data2[1]) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
+}
+
+function render(data) {
+  data.forEach((city, idx)=> {
+    let li = document.createElement('li');
+    li.innerHTML = `第${idx + 1}名，${city[0]}的空气质量：<b>${city[1]}</b>`;
+    document.querySelector('#resort').appendChild(li);
+  });
+}
+
+function btnHandle() {
+  var aqiData = getData();
+  aqiData = sortAqiData(aqiData);
+  render(aqiData);
+}
+
+function init() {
+  document.querySelector('#sort-btn').addEventListener('click', btnHandle);
+}
+
+init();
+
+</script>
+</body>
+</html>
